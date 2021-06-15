@@ -27,7 +27,8 @@ class UploadPhoto extends Component
             $this->updateDatabase($user,
                 $path
             );
-            //return redirect()                ->route('tweets.index');
+            return redirect()
+                ->route('tweets.index');
         }
     }
     protected function uploadPhoto($user)

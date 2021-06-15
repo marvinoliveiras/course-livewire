@@ -9,7 +9,7 @@ class Tweet extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'content',
+        'content'
     ];
     public function user()
     {
@@ -17,5 +17,20 @@ class Tweet extends Model
             ->belongsTo(
                 User::class
             );
+    }
+    public function likes()
+    {
+        return $this->hasMany(
+            Like::class)
+            ->where(function($query){
+                if(auth()->check()){
+                    $query->where(
+                        'user_id',
+                        auth()
+                        ->user()
+                        ->id
+                    );
+                }
+            });
     }
 }

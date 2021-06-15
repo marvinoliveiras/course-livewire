@@ -9,24 +9,40 @@ class UploadPhoto extends Component
     public $photo;
     public function render()
     {
-        return view('livewire.user.upload-photo');
+        return view(
+            'livewire.user.upload-photo'
+        );
     }
     public function storagePhoto()
     {
-        $user = auth()->user();
         $this->validate([
-            'photo' => 'required|image|max:3072'
+            'photo' =>
+                'required|image|max:3072'
         ]);
-        $nameFile = Str::slug($user->name)
-            .'.'.$this->photo
-            ->getClientOriginalExtension();
-        $path = $this->photo
-            ->storeAs('users',$nameFile);
+        $user = auth()->user();
+        $path = $this->uploadPhoto(
+            $user->name
+        );
         if($path){
-            $user->profile_photo_path = $path;
-            $user->update();
+            $this->updateDatabase($user,
+                $path
+            );
             return redirect()
                 ->route('tweets.index');
         }
+    }
+    protected function uploadPhoto($userName)
+    {
+        $nameFile = Str::slug($userName)
+            .'.'.$this->photo
+            ->getClientOriginalExtension();
+        return $this->photo
+            ->storeAs('users',$nameFile);
+    }
+    protected function updateDatabase(
+        $user, $path)
+    {
+        $user->profile_photo_path = $path;
+        $user->update();
     }
 }

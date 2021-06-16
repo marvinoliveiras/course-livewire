@@ -4,7 +4,7 @@ use App\Models\{Tweet};
 use Livewire\{Component,
     WithPagination
 };
-class ShowTweets extends Component
+class TweetController extends Component
 {
     use WithPagination;
     public $content;

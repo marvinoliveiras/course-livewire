@@ -1,15 +1,13 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Tweet extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'content'
+        'content',
+        'retweet'
     ];
     public function user()
     {
@@ -18,7 +16,7 @@ class Tweet extends Model
                 User::class
             );
     }
-    public function likes()
+    public function like()
     {
         return $this->hasMany(
             Like::class)
@@ -32,5 +30,10 @@ class Tweet extends Model
                     );
                 }
             });
+    }
+    public function likes()
+    {
+        return $this
+            ->hasMany(Like::class);
     }
 }
